@@ -1,14 +1,25 @@
-
-import * as React from 'react';
+import * as React from "react";
+import { useState } from "react";
 
 function Board() {
-  const squares = Array(9).fill(null);
-  function selectSquare(square) {
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [nextValue, setNextValue] = useState("X");
 
+  function selectSquare(square) {
+    if (squares[square] || calculateWinner(squares)) return;
+    const newSquares = squares.slice();
+    newSquares[square] = nextValue;
+    setSquares(newSquares);
+    setNextValue(nextValue === "X" ? "O" : "X");
   }
 
   function restart() {
+    setSquares(Array(9).fill(null));
+    setNextValue("X");
   }
+
+  const winner = calculateWinner(squares);
+  const status = calculateStatus(winner, squares, nextValue);
 
   function renderSquare(i) {
     return (
@@ -20,54 +31,45 @@ function Board() {
 
   return (
     <div>
-      <div >STATUS</div>
-      <div >
+      <div>{status}</div>
+      <div>
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
-      <div >
+      <div>
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
       </div>
-      <div >
+      <div>
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      <button onClick={restart}>
-        restart
-      </button>
+      <button onClick={restart}>restart</button>
     </div>
   );
 }
 
 function Game() {
   return (
-    <div >
-      <div >
+    <div>
+      <div>
         <Board />
       </div>
     </div>
   );
 }
 
-// eslint-disable-next-line no-unused-vars
 function calculateStatus(winner, squares, nextValue) {
   return winner
     ? `Winner: ${winner}`
     : squares.every(Boolean)
-      ? `Scratch: Cat's game`
-      : `Next player: ${nextValue}`;
+    ? `Scratch: Cat's game`
+    : `Next player: ${nextValue}`;
 }
 
-// eslint-disable-next-line no-unused-vars
-function calculateNextValue(squares) {
-  return squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O';
-}
-
-// eslint-disable-next-line no-unused-vars
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
