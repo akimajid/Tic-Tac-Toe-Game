@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import "./index.css";
 
 function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
@@ -32,22 +32,18 @@ function Board() {
   return (
     <div>
       <div>{status}</div>
-      <div>
+      <div id="board">
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
-      </div>
-      <div>
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
-      </div>
-      <div>
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      <button onClick={restart}>restart</button>
+      <button onClick={restart}>Restart</button>
     </div>
   );
 }
@@ -55,9 +51,7 @@ function Board() {
 function Game() {
   return (
     <div>
-      <div>
-        <Board />
-      </div>
+      <Board />
     </div>
   );
 }
